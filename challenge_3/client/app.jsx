@@ -15,18 +15,18 @@ class ShoppingList extends React.Component{
     this.state ={
       items: []
     }
-    this.createItem = this.createItem.bind(this);
-  }
-
-  createItem(newItem){
-    this.setState({
-      items: [...this.state.items, newItem]
-    })
   }
 
   render() {
     const list = this.state.items.map(item => {
-      return <ShoppingListEntry key={item.id} id={item.id} name={item.name} />
+      return <ShoppingListEntry
+      key={item.id}
+      id={item.id}
+      name={item.name}
+      email={item.email}
+      password={item.password}
+      deleteItem={this.deleteItem}
+      />
     })
     return(
       <div>
@@ -47,14 +47,14 @@ class ShoppingListEntry extends React.Component {
     }
   }
 
-
+  handleDelete(event){
+    this.props.deleteItem(this.props.name)
+  }
 
   render() {
     return (
       <div>
         <li>{this.props.name}</li>
-        <button>X</button>
-        <button>Edit</button>
       </div>
     )
   }
@@ -64,7 +64,9 @@ class NewItemForm extends React.Component{
   constructor(props){
     super(props);
     this.state ={
-      name: ""
+      name: "",
+      email: "",
+      password: ""
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -78,25 +80,63 @@ class NewItemForm extends React.Component{
 
   handleSubmit(event){
     event.preventDefault();
-    this.props.createItem({...this.state});
-    this.setState({
-      name: ""
+    $.ajax('/', {
+      type: "POST",
+      data: this.state,
+      statusCode:{
+        200: (data) =>{
+          console.log(data);
+        },
+        400: () => {
+          alert("error")
+        }
+      }
     })
   }
-
-
 
   render(){
     return(
       <form onSubmit={this.handleSubmit}>
-        <input type="text" onChange={this.handleChange}/>
+        <input
+        type="text"
+        placeholder="User Name"
+        name="name"
+        value={this.state.name}
+        onChange={this.handleChange}
+        />
+        <div>
+          <input
+          type="text"
+          placeholder="User Email"
+          name="email"
+          value={this.state.email}
+          onChange={this.handleChange}
+          />
+        </div>
+        <div>
+          <input
+          type="text"
+          placeholder="Password"
+          name="password"
+          value={this.state.password}
+          onChange={this.handleChange}
+          />
+        </div>
         <button>Submit</button>
       </form>
     )
   }
 }
 
+class form2 extends React.Component{
 
+
+}
+
+class form3 extends React.Component{
+
+
+}
 
 ReactDOM.render(<App />, document.getElementById('app'));
 
