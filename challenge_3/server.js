@@ -5,8 +5,8 @@ app.listen(3000, () => {console.log('Port is listening')})
 
 app.use(express.urlencoded({extended: false}));
 
-app.post('/', (req, res) => {
-  console.log("123")
+app.post('/form1', (req, res) => {
+  console.log("form1")
   if (Object.values(req.body).includes("")){
     res.sendStatus(400);
   }else{
@@ -15,3 +15,22 @@ app.post('/', (req, res) => {
   }
 });
 
+app.post('/form2', (req, res) => {
+  console.log("form1")
+  if (Object.values(req.body).includes("")){
+    res.sendStatus(400);
+  }else{
+    res.status(200);
+    res.send('sucess submit');
+  }
+});
+
+app.post('/form3', (req, res) => {
+  console.log("form1")
+  if (Object.values(req.body).includes("")){
+    res.sendStatus(400);
+  }else{
+    res.status(200);
+    res.send('sucess submit');
+  }
+});
