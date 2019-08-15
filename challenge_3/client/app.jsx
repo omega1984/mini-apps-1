@@ -88,7 +88,7 @@ class NewItemForm extends React.Component{
           onChange={this.handleChange}
           />
         </div>
-        <button>Submit</button>
+        <button>Next</button>
       </form>
     )
   }
@@ -171,7 +171,7 @@ class Form2 extends React.Component{
           onChange={this.handleChange}
           />
         </div>
-        <button>Submit</button>
+        <button>Next</button>
       </form>
     )
   }
@@ -205,6 +205,7 @@ class Form3 extends React.Component{
         200: (data) =>{
           console.log(data);
           this.props.changeForm()
+          window.location.href = '/';
         },
         400: () => {
           alert("error")
@@ -246,7 +247,7 @@ class Form3 extends React.Component{
           onChange={this.handleChange}
           />
         </div>
-        <button>Submit</button>
+        <button>Purchase</button>
       </form>
     )
   }
