@@ -3,58 +3,8 @@ class App extends React.Component{
   render() {
     return (
       <div>
-        <ShoppingList />
-      </div>
-    )
-  }
-}
-
-class ShoppingList extends React.Component{
-  constructor(props){
-    super(props);
-    this.state ={
-      items: []
-    }
-  }
-
-  render() {
-    const list = this.state.items.map(item => {
-      return <ShoppingListEntry
-      key={item.id}
-      id={item.id}
-      name={item.name}
-      email={item.email}
-      password={item.password}
-      deleteItem={this.deleteItem}
-      />
-    })
-    return(
-      <div>
-        <NewItemForm createItem={this.createItem}/>
-        <ul>
-          {list}
-        </ul>
-      </div>
-    )
-  }
-}
-
-class ShoppingListEntry extends React.Component {
-  constructor(props){
-    super(props);
-    this.state ={
-      name: this.props.name
-    }
-  }
-
-  handleDelete(event){
-    this.props.deleteItem(this.props.name)
-  }
-
-  render() {
-    return (
-      <div>
-        <li>{this.props.name}</li>
+        <NewItemForm />
+        <Form2 />
       </div>
     )
   }
@@ -128,14 +78,80 @@ class NewItemForm extends React.Component{
   }
 }
 
-class form2 extends React.Component{
+class Form2 extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      states: "",
+      zip: ""
+    }
+  }
 
+  handleSubmit(event){
+    event.preventDefault();
+    $.ajax('/', {
+      type: "POST",
+      data: this.state,
+      statusCode:{
+        200: (data) =>{
+          console.log(data);
+        },
+        400: () => {
+          alert("error")
+        }
+      }
+    })
+  }
 
-}
-
-class form3 extends React.Component{
-
-
+  render(){
+    return(
+      <form onSubmit={this.handleSubmit}>
+        <input
+        type="text"
+        placeholder="address line one"
+        name="addressLine1"
+        value={this.state.addressLine1}
+        onChange={this.handleChange}
+        />
+        <div>
+          <input
+          type="text"
+          placeholder="address line two"
+          name="addressLine2"
+          value={this.state.addressLine2}
+          onChange={this.handleChange}
+          />
+        </div>
+        <div>
+          <input
+          type="text"
+          placeholder="city"
+          name="city"
+          value={this.state.city}
+          onChange={this.handleChange}
+          />
+          <input
+          type="text"
+          placeholder="states"
+          name="states"
+          value={this.state.states}
+          onChange={this.handleChange}
+          />
+          <input
+          type="text"
+          placeholder="zip"
+          name="zip"
+          value={this.state.zip}
+          onChange={this.handleChange}
+          />
+        </div>
+        <button>Submit</button>
+      </form>
+    )
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
