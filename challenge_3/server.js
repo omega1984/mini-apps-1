@@ -7,32 +7,31 @@ app.use(express.urlencoded({extended: false}));
 
 app.listen(3000, () => {console.log('Port is listening')})
 
-var connection = mysql.createConnection({
+
+var db = mysql.createConnection({
   host     : 'localhost',
   user     : 'omega1984',
   password : '1917',
   database : 'forms'
 });
 
-connection.connect(err => {
+db.connect(err => {
   if (err){
     console.log(err);
   }
   console.log('Database is connected');
 });
 
-// connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-//   if (error) throw error;
-//   console.log('The solution is: ', results[0].solution);
-// });
-
-// connection.end();
+var userData = {};
 
 app.post('/form1', (req, res) => {
   console.log("form1")
   if (Object.values(req.body).includes("")){
     res.sendStatus(400);
   }else{
+    for (var key in req.body){
+      userData[key] = req.body[key];
+    }
     res.status(200);
     res.send('sucess submit');
   }
@@ -43,6 +42,9 @@ app.post('/form2', (req, res) => {
   if (Object.values(req.body).includes("")){
     res.sendStatus(400);
   }else{
+    for (var key in req.body){
+      userData[key] = req.body[key];
+    }
     res.status(200);
     res.send('sucess submit');
   }
@@ -50,10 +52,22 @@ app.post('/form2', (req, res) => {
 
 app.post('/form3', (req, res) => {
   console.log("form1")
-  if (Object.values(req.body).includes("")){
+  if (req.body === undefined){
     res.sendStatus(400);
   }else{
-    res.status(200);
-    res.send('sucess submit');
+    for (var key in req.body){
+      userData[key] = req.body[key];
+    }
+    console.log(userData);
+    const sql = `INSERT INTO form1 (user_name, user_email, password, address1, address2, city, state, zip, expiration, cvv)
+      VALUES (?,?,?,?,?,?,?,?,?,?)`
+    db.query(sql, [userData.name, userData.email, userData.password, userData.addressLine1, userData.addressLine2, userData.city, userData.states, userData.zip, userData.expiration, userData.CVV],
+      (err, data) => {
+        if (err) console.log(err);
+        else{
+          res.status(200);
+          res.send('sucess submit');
+        }
+      });
   }
 });

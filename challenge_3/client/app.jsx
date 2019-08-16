@@ -14,11 +14,15 @@ class App extends React.Component{
     console.log(this.state.switch)
   }
 
+  // handlePurchase(){
+  //   alert("your order has been submited");
+  // }
+
   render() {
     return (
       <div>
         {
-          this.state.switch === 1 ? <NewItemForm changeForm={this.changeForm}/> : (this.state.switch === 2 ? <Form2 changeForm={this.changeForm}/> : <Form3 changeForm={this.changeForm}/>)
+          this.state.switch === 1 ? <NewItemForm changeForm={this.changeForm}/> : (this.state.switch === 2 ? <Form2 changeForm={this.changeForm}/> : <Form3 />)
         }
       </div>
     )
@@ -204,7 +208,7 @@ class Form3 extends React.Component{
       statusCode:{
         200: (data) =>{
           console.log(data);
-          this.props.changeForm()
+          alert('your order has been processed');
           window.location.href = '/';
         },
         400: () => {
@@ -254,4 +258,3 @@ class Form3 extends React.Component{
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
-
